@@ -20,12 +20,30 @@ class NightWriterTest < Minitest::Test
     assert NightWriter.new.file_writer
   end
 
-  def test_it_writes_braille_text
+  def test_it_encodes_chars_to_braille
     skip
+    writer = NightWriter.new
+    assert_equal "0.\n..\n..\n" , writer.encode_to_braille('a')
   end
 
-  def test_it_encodes_to_braille
-    skip
+  def test_it_builds_first_third_of_output_braille_line
+    writer = NightWriter.new
+    input = "abc"
+    first_line = "0.0.00"
+    assert_equal first_line, writer.build_third_of_line(input,0)
   end
 
+  def test_it_builds_second_third_of_output_braille_line
+    writer = NightWriter.new
+    input = "abc"
+    second_line = "..0..."
+    assert_equal second_line, writer.build_third_of_line(input,1)
+  end
+
+  def test_it_builds_third_third_of_output_braille_line
+    writer = NightWriter.new
+    input = "abc"
+    third_line = "......"
+    assert_equal third_line, writer.build_third_of_line(input,2)
+  end
 end
