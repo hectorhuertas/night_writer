@@ -56,6 +56,12 @@ class NightWriter
     parsed_string=parsed_array.join
   end
 
+  def encode_multiple_lines_to_braille(input_array)
+    output_array = input_array.map do |line|
+      encode_line_to_braille(line)
+    end
+  end
+
   def encode_line_to_braille(input_string)
     braille_output=''
     braille_output+=build_third_of_line(input_string,0)
@@ -88,6 +94,7 @@ if __FILE__ == $0
   ARGV[1]='braille.txt'
   puts ARGV.inspect
   nw.wrap_lines('b')
+  nw.encode_multiple_lines_to_braille(["aaa","bbb","ccc"])
   # puts  content = nw.file_reader.read.chomp               # ~> Errno::ENOENT: No such file or directory @ rb_sysopen - message.txt
   # puts  content = nw.file_reader.read.chomp
   # puts parsed_content=nw.parse_string(content).inspect

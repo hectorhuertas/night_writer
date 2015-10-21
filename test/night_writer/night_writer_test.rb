@@ -152,28 +152,35 @@ class NightWriterTest < Minitest::Test
   #Multiple lines encoding to braille
   def  test_text_multi_line_encoder_takes_an_array_of_strings
     night_writer = NightWriter.new
-    skip
+    assert night_writer.encode_multiple_lines_to_braille(["","",""])
   end
 
   def  test_text_multi_line_encoder_returns_a_string
     night_writer = NightWriter.new
-    skip
+    assert_kind_of Array, night_writer.encode_multiple_lines_to_braille(["","",""])
+    assert_kind_of String, night_writer.encode_multiple_lines_to_braille(["","",""])[0]
   end
-  
+
   def  test_it_encodes_a_single_line
     night_writer = NightWriter.new
-    skip
+    input =["abc","abc","abc"]
+    output = ["0.0.00\n..0...\n......",
+      "0.0.00\n..0...\n......",
+      "0.0.00\n..0...\n......"]
+    assert_equal output, night_writer.encode_multiple_lines_to_braille(input)
   end
 
   def  test_it_encodes_multiple_lines
     night_writer = NightWriter.new
-    skip
+    input =["abc"]
+    output = ["0.0.00\n..0...\n......"]
+    assert_equal output, night_writer.encode_multiple_lines_to_braille(input)
   end
 
-
   #Firle writing
-
   def test_it_has_a_file_writer
     assert NightWriter.new.file_writer
   end
+
+  #Integration Test
 end
