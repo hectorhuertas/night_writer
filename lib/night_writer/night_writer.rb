@@ -1,32 +1,32 @@
-require_relative 'file_reader'  # => true
-require_relative 'file_writer'  # => true
+require_relative 'file_reader'
+require_relative 'file_writer'
 
 class NightWriter
-  attr_reader :file_reader, :file_writer  # => nil
+  attr_reader :file_reader, :file_writer
 
   def initialize
-    @file_reader = FileReader.new  # => #<FileReader:0x007f94a98ae360>
-    @file_writer = FileWriter.new  # => #<FileWriter:0x007f94a98ae1a8>
+    @file_reader = FileReader.new
+    @file_writer = FileWriter.new
   end
 
   def encode_to_braille(input_string)
     parsed_string = parse_string(input_string)
-    encode_characters_to_braile(parsed_string)
+    encode_line_to_braille(parsed_string)
   end
 
   def wrap_lines(input_string)
-    return [' '] if input_string.empty?                 # => false
-    input_string.length.times do |pos|                 # => 1
-      if (pos+1) % 80 == 0                             # => false
+    return [' '] if input_string.empty?
+    input_string.length.times do |pos|
+      if (pos+1) % 80 == 0
         # input_string[pos+1]
         if not input_string[pos].scan(/[\^#]/).empty?
           input_string.insert(pos,"\n")
         else
           input_string.insert((pos+1),"\n")
         end
-      end                                              # => nil
-    end                                                # => 1
-    input_string.split()                               # => ["b"]
+      end
+    end
+    input_string.split()
   end
 
   def parse_string(input_string)
@@ -56,7 +56,7 @@ class NightWriter
     parsed_string=parsed_array.join
   end
 
-  def encode_characters_to_braile(input_string)
+  def encode_line_to_braille(input_string)
     braille_output=''
     braille_output+=build_third_of_line(input_string,0)
     braille_output+="\n"
@@ -77,17 +77,17 @@ class NightWriter
 
 end
 
-if __FILE__ == $0        # => true
+if __FILE__ == $0
   # alphabet = {'a'=>%w(0. .. ..), 'b'=>%w(0. 0. ..), 'c'=>%w(00 .. ..)}
-  nw = NightWriter.new   # => #<NightWriter:0x007f94a98ae388 @file_reader=#<FileReader:0x007f94a98ae360>, @file_writer=#<FileWriter:0x007f94a98ae1a8>>
+  nw = NightWriter.new
   # nw.parse_string('a'*79 + '^a')
   # nw.parse_string("PeTeR9")
   # nw.build_third_of_line('abc',0)
-  puts ARGV.inspect      # => nil
-  ARGV[0]='message.txt'  # => "message.txt"
-  ARGV[1]='braille.txt'  # => "braille.txt"
-  puts ARGV.inspect      # => nil
-  nw.wrap_lines('b')     # => ["b"]
+  puts ARGV.inspect
+  ARGV[0]='message.txt'
+  ARGV[1]='braille.txt'
+  puts ARGV.inspect
+  nw.wrap_lines('b')
   # puts  content = nw.file_reader.read.chomp               # ~> Errno::ENOENT: No such file or directory @ rb_sysopen - message.txt
   # puts  content = nw.file_reader.read.chomp
   # puts parsed_content=nw.parse_string(content).inspect
@@ -101,7 +101,4 @@ if __FILE__ == $0        # => true
   # puts content = nw.parse_string(content)
   # nw.encode_characters_to_braile(content)
   # nw.file_writer.write(content)
-end                      # => ["b"]
-
-# >> []
-# >> ["message.txt", "braille.txt"]
+end

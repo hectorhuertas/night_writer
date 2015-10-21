@@ -11,10 +11,12 @@ class NightWriterTest < Minitest::Test
     assert night_writer
   end
 
+  #File reading
   def test_it_has_a_file_reader
     assert NightWriter.new.file_reader
   end
 
+  #Parsing string
   def test_parsing_takes_a_string
     night_writer = NightWriter.new
     assert night_writer.parse_string('')
@@ -53,6 +55,7 @@ class NightWriterTest < Minitest::Test
     assert_equal output, night_writer.parse_string("Hola Peter!, 3-14?")
   end
 
+  #Line wrapping
   def test_line_wrapping_takes_a_string
     night_writer = NightWriter.new
     assert night_writer.wrap_lines('')
@@ -92,32 +95,83 @@ class NightWriterTest < Minitest::Test
     assert_equal output, night_writer.wrap_lines(input)
   end
 
-  def test_it_builds_first_third_of_output_braille_line
-    writer = NightWriter.new
+  #Building third of line
+  def test_third_of_line_builder_takes_a_string_and_fixnum
+    night_writer = NightWriter.new
+    assert night_writer.build_third_of_line('',0)
+  end
+
+  def test_third_of_line_builder_returns_a_string
+    night_writer = NightWriter.new
+    assert_kind_of String, night_writer.build_third_of_line('',0)
+  end
+
+  def test_it_builds_first_third_of_braille_line
+    night_writer = NightWriter.new
+    # input = "abcdefghijklmnopqrstuvwxyz!',-.?"
     input = "abc"
     first_line = "0.0.00"
-    assert_equal first_line, writer.build_third_of_line(input,0)
+    assert_equal first_line, night_writer.build_third_of_line(input,0)
   end
 
-  def test_it_builds_second_third_of_output_braille_line
-    writer = NightWriter.new
+  def test_it_builds_second_third_of_braille_line
+    night_writer = NightWriter.new
+    # input = "abcdefghijklmnopqrstuvwxyz!',-.?"
     input = "abc"
     second_line = "..0..."
-    assert_equal second_line, writer.build_third_of_line(input,1)
+    assert_equal second_line, night_writer.build_third_of_line(input,1)
   end
 
-  def test_it_builds_third_third_of_output_braille_line
-    writer = NightWriter.new
+  def test_it_builds_third_third_of_braille_line
+    night_writer = NightWriter.new
+    # input = "abcdefghijklmnopqrstuvwxyz!',-.?"
     input = "abc"
     third_line = "......"
-    assert_equal third_line, writer.build_third_of_line(input,2)
+    assert_equal third_line, night_writer.build_third_of_line(input,2)
   end
 
-  def test_it_encodes_chars_to_braille
-    writer = NightWriter.new
-    assert_equal "0.\n..\n.." , writer.encode_to_braille('a')
+  #Line encoding to braille
+  def test_line_encoder_takes_a_string
+    night_writer = NightWriter.new
+    assert night_writer.encode_line_to_braille('')
   end
 
+  def test_line_enconder_returns_a_string
+    night_writer = NightWriter.new
+    assert_kind_of String, night_writer.encode_line_to_braille('')[0]
+  end
+
+  def test_it_encodes_line_to_braille
+    night_writer = NightWriter.new
+    # input = "abcdefghijklmnopqrstuvwxyz!',-.?"
+    input = "abc"
+    output ="0.0.00\n..0...\n......"
+    assert_equal output , night_writer.encode_line_to_braille(input)
+  end
+
+  #Multiple lines encoding to braille
+  def  test_text_multi_line_encoder_takes_an_array_of_strings
+    night_writer = NightWriter.new
+    skip
+  end
+
+  def  test_text_multi_line_encoder_returns_a_string
+    night_writer = NightWriter.new
+    skip
+  end
+  
+  def  test_it_encodes_a_single_line
+    night_writer = NightWriter.new
+    skip
+  end
+
+  def  test_it_encodes_multiple_lines
+    night_writer = NightWriter.new
+    skip
+  end
+
+
+  #Firle writing
 
   def test_it_has_a_file_writer
     assert NightWriter.new.file_writer
