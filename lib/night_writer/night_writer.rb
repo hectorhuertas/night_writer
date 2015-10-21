@@ -10,11 +10,11 @@ class NightWriter
   end
 
   def encode_to_braille(input_string)
-    parsed_string = parse_string_for_encoding(input_string)
+    parsed_string = parse_string(input_string)
     encode_characters_to_braile(parsed_string)
   end
 
-  def parse_string_for_encoding(input_string)
+  def parse_string(input_string)
     input_array=input_string.split('')
     parsed_array=input_array.map do |char|
       if not char.scan(/[0-9]/).empty?
@@ -65,8 +65,8 @@ end
 if __FILE__ == $0
   # alphabet = {'a'=>%w(0. .. ..), 'b'=>%w(0. 0. ..), 'c'=>%w(00 .. ..)}
   nw = NightWriter.new
-  # nw.parse_string_for_encoding('a'*79 + '^a')
-  # nw.parse_string_for_encoding("PeTeR9")
+  # nw.parse_string('a'*79 + '^a')
+  # nw.parse_string("PeTeR9")
   # nw.build_third_of_line('abc',0)
   puts ARGV.inspect
   ARGV[0]='message.txt'
@@ -74,15 +74,15 @@ if __FILE__ == $0
   puts ARGV.inspect
   puts  content = nw.file_reader.read.chomp
   puts  content = nw.file_reader.read.chomp
-  puts parsed_content=nw.parse_string_for_encoding(content).inspect
-  puts parsed_content=nw.parse_string_for_encoding(content)
+  puts parsed_content=nw.parse_string(content).inspect
+  puts parsed_content=nw.parse_string(content)
   puts "^acb^ba#a#a#c#c".inspect
   puts "^acb^ba#a#a#c#c".class
   puts nw.encode_characters_to_braile("^acb^ba#a#a#c#c")
   #
   puts nw.encode_characters_to_braile(parsed_content)
   # nw.encode_to_braille(content).inspect
-  # puts content = nw.parse_string_for_encoding(content)
+  # puts content = nw.parse_string(content)
   # nw.encode_characters_to_braile(content)
   # nw.file_writer.write(content)
 end
