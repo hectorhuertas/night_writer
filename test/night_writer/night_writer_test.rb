@@ -53,19 +53,43 @@ class NightWriterTest < Minitest::Test
     assert_equal output, night_writer.parse_string("Hola Peter!, 3-14?")
   end
 
-  def test_it_keeps_line_length_under_80_characters
-    writer = NightWriter.new
-    assert_equal 'a'*80+"\n"+'a'*10, writer.parse_string('a'*90)
+  def test_line_wrapping_takes_a_string
+    night_writer = NightWriter.new
+    assert night_writer.wrap_lines('')
   end
 
-  def test_it_does_not_cuts_the_line_between_double_characters
-    writer = NightWriter.new
-    assert_equal 'a'*79+"\n"+'^a', writer.parse_string('a'*79 + '^a')
+  def test_line_wrapping_returns_an_array_of_strings
+    night_writer = NightWriter.new
+    assert_kind_of Array, night_writer.wrap_lines('')
+    assert_kind_of String, night_writer.wrap_lines('')[0]
   end
 
-  def test_it_parses_strings_to_prepare_encoding
-    writer = NightWriter.new
-    assert_equal "^hi ^peter#g#g!" , writer.parse_string("Hi Peter77!")
+  def test_it_wraps_80_character_lines
+    night_writer = NightWriter.new
+    input = 'a' * 90
+    output = ['a' * 80, 'a' * 10]
+    assert_equal output, night_writer.wrap_lines(input)
+  end
+
+  def test_line_wrapping_respects_capital_characters
+    night_writer = NightWriter.new
+    input = 'a'* 79 + '^a'
+    output = ['a' * 79, '^a']
+    assert_equal output, night_writer.wrap_lines(input)
+  end
+
+  def test_line_wrapping_respects_numbers
+    night_writer = NightWriter.new
+    input = 'a'* 79 + '#b'
+    output = ['a' * 79, '#b']
+    assert_equal output, night_writer.wrap_lines(input)
+  end
+
+  def test_line_wrapping_does_not_respects_punctuation
+    night_writer = NightWriter.new
+    input = 'a'* 79 + '.,'
+    output = ['a' * 79 + '.', ',']
+    assert_equal output, night_writer.wrap_lines(input)
   end
 
   def test_it_builds_first_third_of_output_braille_line
