@@ -26,39 +26,31 @@ class NightWriterTest < Minitest::Test
   end
 
   def test_it_parses_capital_letters
-    skip
     night_writer = NightWriter.new
+    assert_equal "^a^b^c", night_writer.parse_string("ABC")
   end
 
   def test_it_parses_numbers
-    skip
     night_writer = NightWriter.new
+    assert_equal "#a#b#c", night_writer.parse_string("123")
   end
 
   def test_it_does_not_parses_punctuation
-    skip
     night_writer = NightWriter.new
+    input = "!',-.?'"
+    assert_equal "!',-.?'", night_writer.parse_string(input)
   end
 
   def test_it_does_not_parses_downcase_letters
-    skip
     night_writer = NightWriter.new
+    assert_equal "abc", night_writer.parse_string("abc")
   end
 
   def test_it_parses_complex_strings
-    skip
     night_writer = NightWriter.new
-  end
-
-
-  def  test_it_parses_capital_letters_to_prepare_for_encoding
-    writer = NightWriter.new
-    assert_equal "^pe^te^r" , writer.parse_string("PeTeR")
-  end
-
-  def  test_it_parses_numbers_letters_to_prepare_for_encoding
-    writer = NightWriter.new
-    assert_equal '#a#c#e#g' , writer.parse_string("1357")
+    input = "Hola Peter!, 3-14?"
+    output = "^hola ^peter!, #c-#a#d?"
+    assert_equal output, night_writer.parse_string("Hola Peter!, 3-14?")
   end
 
   def test_it_keeps_line_length_under_80_characters
