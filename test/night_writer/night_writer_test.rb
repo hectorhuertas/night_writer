@@ -1,5 +1,4 @@
 require 'minitest'
-require 'minitest/autorun'
 require 'night_writer/night_writer'
 
 class NightWriterTest < Minitest::Test
@@ -31,7 +30,13 @@ class NightWriterTest < Minitest::Test
   end
 
   def test_it_keeps_line_length_under_80_characters
-    skip
+    writer = NightWriter.new
+    assert_equal 'a'*80+"\n"+'a'*10, writer.parse_string_for_encoding('a'*90)
+  end
+
+  def test_it_does_not_cuts_the_line_between_double_characters
+    writer = NightWriter.new
+    assert_equal 'a'*79+"\n"+'^a', writer.parse_string_for_encoding('a'*79 + '^a')
   end
 
   def test_it_parses_strings_to_prepare_encoding
