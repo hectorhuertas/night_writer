@@ -155,13 +155,20 @@ class NightWriterTest < Minitest::Test
     assert night_writer.encode_multiple_lines_to_braille(["","",""])
   end
 
-  def  test_text_multi_line_encoder_returns_a_string
+  def  test_text_multi_line_encoder_returns_and_array_of_strings
     night_writer = NightWriter.new
     assert_kind_of Array, night_writer.encode_multiple_lines_to_braille(["","",""])
     assert_kind_of String, night_writer.encode_multiple_lines_to_braille(["","",""])[0]
   end
 
   def  test_it_encodes_a_single_line
+    night_writer = NightWriter.new
+    input =["abc"]
+    output = ["0.0.00\n..0...\n......"]
+    assert_equal output, night_writer.encode_multiple_lines_to_braille(input)
+  end
+
+  def  test_it_encodes_a_multiple_lines
     night_writer = NightWriter.new
     input =["abc","abc","abc"]
     output = ["0.0.00\n..0...\n......",
@@ -170,11 +177,32 @@ class NightWriterTest < Minitest::Test
     assert_equal output, night_writer.encode_multiple_lines_to_braille(input)
   end
 
-  def  test_it_encodes_multiple_lines
+
+  #Output string builder
+  def output_string_builder_takes_an_array_of_strings
     night_writer = NightWriter.new
-    input =["abc"]
-    output = ["0.0.00\n..0...\n......"]
-    assert_equal output, night_writer.encode_multiple_lines_to_braille(input)
+    assert night_writer.build_output_string(["","",""])
+  end
+
+  def output_string_builder_returns_a_string
+    night_writer = NightWriter.new
+    assert_kind_of String, night_writer.build_output_string(["","",""])
+  end
+
+  def test_output_string_builder_builds_a_single_line_string
+    night_writer = NightWriter.new
+    input = ["0.0.00\n..0...\n......"]
+    output = "0.0.00\n..0...\n......"
+    assert_equal output, night_writer.build_output_string(input)
+  end
+
+  def test_output_string_builder_builds_a_multiline_string
+    night_writer = NightWriter.new
+    input = ["0.0.00\n..0...\n......",
+      "0.0.00\n..0...\n......",
+      "0.0.00\n..0...\n......"]
+    output = "0.0.00\n..0...\n......\n0.0.00\n..0...\n......\n0.0.00\n..0...\n......"
+    assert_equal output, night_writer.build_output_string(input)
   end
 
   #Firle writing

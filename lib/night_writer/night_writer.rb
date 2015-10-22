@@ -18,7 +18,6 @@ class NightWriter
     return [' '] if input_string.empty?
     input_string.length.times do |pos|
       if (pos+1) % 80 == 0
-        # input_string[pos+1]
         if not input_string[pos].scan(/[\^#]/).empty?
           input_string.insert(pos,"\n")
         else
@@ -81,20 +80,36 @@ class NightWriter
     output
   end
 
+  def build_output_string(input_array)
+    output_string = ''
+    input_array.each do |line|
+      output_string += line + "\n"
+    end
+    output_string.chomp
+  end
+
 end
 
 if __FILE__ == $0
+  #REAL DEAL
+  night_writer = NightWriter.new
+  input_roman = night_writer.file_reader.read.chomp
+  parsed_roman = night_writer.parse_string(input_roman)
+  wrapped_roman = night_writer.wrap_lines(parsed_roman)
+  multiline_braille = night_writer.encode_multiple_lines_to_braille(wrapped_roman)
+  output_string = night_writer.build_output_string(multiline_braille)
+  night_writer.file_writer.write(output_string)
   # alphabet = {'a'=>%w(0. .. ..), 'b'=>%w(0. 0. ..), 'c'=>%w(00 .. ..)}
-  nw = NightWriter.new
+  # nw = NightWriter.new
   # nw.parse_string('a'*79 + '^a')
   # nw.parse_string("PeTeR9")
   # nw.build_third_of_line('abc',0)
-  puts ARGV.inspect
-  ARGV[0]='message.txt'
-  ARGV[1]='braille.txt'
-  puts ARGV.inspect
-  nw.wrap_lines('b')
-  nw.encode_multiple_lines_to_braille(["aaa","bbb","ccc"])
+  # puts ARGV.inspect
+  # ARGV[0]='message.txt'
+  # ARGV[1]='braille.txt'
+  # puts ARGV.inspect
+  # nw.wrap_lines('b')
+  # nw.encode_multiple_lines_to_braille(["aaa","bbb","ccc"])
   # puts  content = nw.file_reader.read.chomp               # ~> Errno::ENOENT: No such file or directory @ rb_sysopen - message.txt
   # puts  content = nw.file_reader.read.chomp
   # puts parsed_content=nw.parse_string(content).inspect
