@@ -67,31 +67,38 @@ class NightWriterTest < Minitest::Test
     assert_kind_of String, night_writer.wrap_lines('')[0]
   end
 
-  def test_it_wraps_80_character_lines
+  def test_it_wraps_40_roman_character_lines
     night_writer = NightWriter.new
-    input = 'a' * 90
-    output = ['a' * 80, 'a' * 10]
+    input = 'a' * 41
+    output = ['a' * 40, 'a']
     assert_equal output, night_writer.wrap_lines(input)
   end
 
   def test_line_wrapping_respects_capital_characters
     night_writer = NightWriter.new
-    input = 'a'* 79 + '^a'
-    output = ['a' * 79, '^a']
+    input = 'a'* 39 + '^a'
+    output = ['a' * 39, '^a']
     assert_equal output, night_writer.wrap_lines(input)
   end
 
   def test_line_wrapping_respects_numbers
     night_writer = NightWriter.new
-    input = 'a'* 79 + '#b'
-    output = ['a' * 79, '#b']
+    input = 'a'* 39 + '#b'
+    output = ['a' * 39, '#b']
     assert_equal output, night_writer.wrap_lines(input)
   end
 
   def test_line_wrapping_does_not_respects_punctuation
     night_writer = NightWriter.new
-    input = 'a'* 79 + '.,'
-    output = ['a' * 79 + '.', ',']
+    input = 'a'* 39 + '.,'
+    output = ['a' * 39 + '.', ',']
+    assert_equal output, night_writer.wrap_lines(input)
+  end
+
+  def test_line_wrapping_does_not_respects_whitespace
+    night_writer = NightWriter.new
+    input = 'a'* 39 + ' ,'
+    output = ['a' * 39 + ' ', ',']
     assert_equal output, night_writer.wrap_lines(input)
   end
 
@@ -205,10 +212,11 @@ class NightWriterTest < Minitest::Test
     assert_equal output, night_writer.build_output_string(input)
   end
 
-  #Firle writing
+  #File writing
   def test_it_has_a_file_writer
     assert NightWriter.new.file_writer
   end
 
   #Integration Test
+
 end
